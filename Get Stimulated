@@ -1,0 +1,21 @@
+-- Simulate holding the left mouse button for 60 seconds
+local VirtualInputManager = game:GetService("VirtualInputManager")
+
+-- Function to hold the left mouse button
+function holdLeftMouse(duration)
+    local startTime = os.clock()
+    
+    -- Simulate mouse button down
+    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+    
+    -- Hold for the specified duration
+    while os.clock() - startTime < duration do
+        wait(0.1) -- Prevent overload
+    end
+
+    -- Simulate mouse button release
+    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+end
+
+-- Example: Hold left mouse button for 60 seconds
+holdLeftMouse(60)
