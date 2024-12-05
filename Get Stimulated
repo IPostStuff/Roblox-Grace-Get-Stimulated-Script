@@ -4,38 +4,97 @@ local playerGui = player:WaitForChild("PlayerGui")
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = playerGui
 
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 300, 0, 150)
+mainFrame.Position = UDim2.new(0.35, -150, 0.4, -75)
+mainFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = screenGui
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 20)
+uiCorner.Parent = mainFrame
+
+local borderFrame = Instance.new("Frame")
+borderFrame.Size = UDim2.new(1, 6, 1, 6)
+borderFrame.Position = UDim2.new(0, -3, 0, -3)
+borderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+borderFrame.BorderSizePixel = 0
+borderFrame.ZIndex = 0
+borderFrame.Parent = mainFrame
+
+local borderCorner = Instance.new("UICorner")
+borderCorner.CornerRadius = UDim.new(0, 22)
+borderCorner.Parent = borderFrame
+
+local topFrame = Instance.new("Frame")
+topFrame.Size = UDim2.new(1, 0, 0.4, 0)
+topFrame.Position = UDim2.new(0, 0, 0, 0)
+topFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+topFrame.BorderSizePixel = 0
+topFrame.Parent = mainFrame
+
+local topUiCorner = Instance.new("UICorner")
+topUiCorner.CornerRadius = UDim.new(0, 20)
+topUiCorner.Parent = topFrame
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 1, 0)
+title.Position = UDim2.new(0, 0, 0, 0)
+title.BackgroundTransparency = 1
+title.Text = "Made by Blackwateryt"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 18
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.Parent = topFrame
+
 local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0, 250, 0, 60)
-toggleButton.Position = UDim2.new(0.2, -125, 0.85, -30)
-toggleButton.Text = "Get Stimulated"
+toggleButton.Size = UDim2.new(0, 200, 0, 50)
+toggleButton.Position = UDim2.new(0.5, -100, 0.6, -25)
+toggleButton.Text = "Start"
 toggleButton.Font = Enum.Font.GothamBold
-toggleButton.TextSize = 30
+toggleButton.TextSize = 25
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-toggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
-toggleButton.BackgroundTransparency = 0.2
-toggleButton.TextStrokeTransparency = 0.6
-toggleButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-toggleButton.Parent = screenGui
+toggleButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+toggleButton.BorderSizePixel = 0
+toggleButton.Parent = mainFrame
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 15)
+buttonCorner.Parent = toggleButton
 
 local isHolding = false
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
+function animateButton(button, isActivated)
+    if isActivated then
+        button:TweenSize(UDim2.new(0, 220, 0, 60), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+        button:TweenBackgroundColor3(Color3.fromRGB(255, 50, 50), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+    else
+        button:TweenSize(UDim2.new(0, 200, 0, 50), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+        button:TweenBackgroundColor3(Color3.fromRGB(50, 200, 50), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true)
+    end
+end
+
 function holdLeftMouse(duration)
     local startTime = os.clock()
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
-    while os.clock() - startTime < duration do
+    while isHolding and os.clock() - startTime < duration do
         wait(0.1)
     end
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
 end
 
 toggleButton.MouseButton1Click:Connect(function()
+    isHolding = not isHolding
     if isHolding then
-        isHolding = false
-        toggleButton.Text = "Get Stimulated"
-    else
-        isHolding = true
-        toggleButton.Text = "Getting Stimulated"
+        toggleButton.Text = "Stop"
+        animateButton(toggleButton, true)
         holdLeftMouse(60)
+    else
+        toggleButton.Text = "Start"
+        animateButton(toggleButton, false)
     end
 end)
