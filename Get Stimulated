@@ -6,7 +6,7 @@ screenGui.Parent = playerGui
 
 local toggleButton = Instance.new("TextButton")
 toggleButton.Size = UDim2.new(0, 250, 0, 60)
-toggleButton.Position = UDim2.new(0.15, -125, 0.85, -30)  -- Moved a little to the right
+toggleButton.Position = UDim2.new(0.2, -125, 0.85, -30)
 toggleButton.Text = "Get Stimulated"
 toggleButton.Font = Enum.Font.GothamBold
 toggleButton.TextSize = 30
@@ -35,7 +35,7 @@ toggleButton.MouseButton1Click:Connect(function()
         toggleButton.Text = "Get Stimulated"
     else
         isHolding = true
-        toggleButton.Text = "Getting Stimulated..."
+        toggleButton.Text = "Getting Stimulated"
         holdLeftMouse(60)
     end
 end)
