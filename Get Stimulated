@@ -68,17 +68,23 @@ buttonCorner.Parent = toggleButton
 local isHolding = false
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
+local mouseButtonDown = false
+
 function holdLeftMouse(duration)
     local startTime = os.clock()
     -- Start holding the left mouse button down
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+    mouseButtonDown = true
 
     while isHolding and os.clock() - startTime < duration do
         wait(0.1)
     end
 
     -- Release the left mouse button after the specified duration
-    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+    if mouseButtonDown then
+        VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+        mouseButtonDown = false
+    end
 end
 
 toggleButton.MouseButton1Click:Connect(function()
@@ -89,5 +95,10 @@ toggleButton.MouseButton1Click:Connect(function()
         holdLeftMouse(60)
     else
         toggleButton.Text = "Start"
+        -- Release mouse if it's still being held down
+        if mouseButtonDown then
+            VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+            mouseButtonDown = false
+        end
     end
 end)
