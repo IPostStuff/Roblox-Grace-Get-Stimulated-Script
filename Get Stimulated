@@ -1,21 +1,41 @@
--- I Added Explaining to script for noobs Simulate holding the left mouse button for 60 seconds
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 250, 0, 60)
+toggleButton.Position = UDim2.new(0.15, -125, 0.85, -30)  -- Moved a little to the right
+toggleButton.Text = "Get Stimulated"
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.TextSize = 30
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+toggleButton.BackgroundTransparency = 0.2
+toggleButton.TextStrokeTransparency = 0.6
+toggleButton.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+toggleButton.Parent = screenGui
+
+local isHolding = false
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
--- Function to hold the left mouse button
 function holdLeftMouse(duration)
     local startTime = os.clock()
-    
-    -- Simulate mouse button down
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
-    
-    -- Hold for the specified duration
     while os.clock() - startTime < duration do
-        wait(0.1) -- Prevent overload
+        wait(0.1)
     end
-
-    -- Simulate mouse button release
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
 end
 
--- Example: Hold left mouse button for 60 seconds
-holdLeftMouse(60)
+toggleButton.MouseButton1Click:Connect(function()
+    if isHolding then
+        isHolding = false
+        toggleButton.Text = "Get Stimulated"
+    else
+        isHolding = true
+        toggleButton.Text = "Getting Stimulated..."
+        holdLeftMouse(60)
+    end
+end)
