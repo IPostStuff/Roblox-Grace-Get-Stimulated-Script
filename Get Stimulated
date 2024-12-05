@@ -1,5 +1,4 @@
--- Made By BlackWaterYT Also I Added Explaining For Script Boobies
--- Simulate holding the left mouse button for 60 seconds
+-- I Added Explaining to script for noobs Simulate holding the left mouse button for 60 seconds
 local VirtualInputManager = game:GetService("VirtualInputManager")
 
 -- Function to hold the left mouse button
